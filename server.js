@@ -2,12 +2,26 @@
 const express = require('express');
 const crypto = require('crypto');
 const { handleMessage } = require('./lib/handler');
+const { chat } = require('./lib/llm');
 
 const CHANNEL_SECRET = process.env.LINE_CHANNEL_SECRET;
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.get('/health', (req, res) => res.send('ok'));
+
+// ===== 臨時測試端點（情境模擬用，測完即刪）=====
+app.post('/simulate', express.json(), async (req, res) => {
+  if (!process.env.SIM_TOKEN || req.headers['x-sim-token'] !== process.env.SIM_TOKEN) {
+    return res.status(403).send('forbidden');
+  }
+  const history = Array.isArray(req.body.history) ? req.body.history : [];
+  try {
+    res.json(await chat(history));
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
 
 function verifySignature(rawBody, signature) {
   if (!CHANNEL_SECRET || !signature) return false;
