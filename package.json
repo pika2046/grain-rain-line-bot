@@ -1,1 +1,1 @@
-{"dependencies":{"express":"^4.19.2"},"description":"穀雨手作均衡餐盒 LINE AI 店員（艾琳）webhook","engines":{"node":">=18"},"main":"server.js","name":"grain-rain-line-bot","scripts":{"start":"node server.js"},"version":"1.0.0"}
+{"dependencies":{"express":"^4.19.2","googleapis":"^186.0.0"},"description":"穀雨手作均衡餐盒 LINE AI 店員（艾琳）webhook","engines":{"node":">=18"},"main":"server.js","name":"grain-rain-line-bot","scripts":{"start":"node server.js"},"version":"1.0.0"}
