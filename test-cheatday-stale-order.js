@@ -116,7 +116,7 @@ async function send(uid, text) {
   seedOldOrder('U_jun1');
   let r = await send('U_jun1', NEW_MSG);
   check('1a 新單不再誤觸作弊日攔截', !r.join('').includes(CHEAT_MSG), r.join(' | '));
-  check('1b 新單出訂單摘要', r.join('').includes('跟你確認一下訂單'), r.join(' | '));
+  check('1b 新單直接成立收據（2026-11-17 改：不再等確認）', r.join('').includes('已幫您登記訂單'), r.join(' | '));
   check('1c 摘要只有海南雞腿排 x6、沒有舊品項',
     r.join('').includes('海南雞腿排 x6') && !r.join('').includes('作弊日一號') && !r.join('').includes('虱目魚柳'),
     r.join(' | '));
@@ -142,7 +142,7 @@ async function send(uid, text) {
   // 情境 4：salvage 單元 —「品項＋數量」寫法
   const s1 = salvage('海南雞腿排6盒（四盒加飯）');
   check('4a salvage 抓到海南雞腿排 x6', s1.items.length === 1 && s1.items[0].name === '海南雞腿排' && s1.items[0].qty === 6, JSON.stringify(s1.items));
-  check('4b salvage 抓到加飯備註', s1.generalNote === '加飯', JSON.stringify(s1));
+  check('4b salvage 加飯備註掛在品項上（2026-11-17 改：同一行有品項＋備註時歸品項，不放整筆）', s1.items[0].note === '加飯' && !s1.generalNote, JSON.stringify(s1));
   const s2 = salvage('嫩煎虱目魚柳 x1（半飯）');
   check('4c salvage 抓到魚柳 x1', s2.items.length === 1 && s2.items[0].name === '嫩煎台南虱目魚柳' && s2.items[0].qty === 1, JSON.stringify(s2.items));
   const s3 = salvage('作弊日一號 x4');
